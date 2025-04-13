@@ -1,12 +1,15 @@
-# React + Vite
+# AI Chat App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+AI Chat App is a dynamic and interactive chat application built with modern web technologies including Vite, React, and Axios. This app enables users to communicate with an AI assistant and leverage its capabilities for conversation, information retrieval, and more.
 
-Currently, two official plugins are available:
+## Features
+- **Real-time AI Conversations:** Engage in seamless conversations powered by AI.
+- **Fast and Efficient:** Built with Vite for fast development and optimized performance.
+- **Data Fetching:** Uses Axios for reliable API communication.
+- **User-friendly Interface:** Designed with React for a responsive and intuitive user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+- **Vite:** Fast and lightweight build tool optimized for modern web development.
+- **React:** Component-based UI framework for building interactive user interfaces.
+- **Axios:** Promise-based HTTP client for making API requests.
