@@ -1,17 +1,22 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { loginUser, signupUser } from '../api/auth';
 import toast from 'react-hot-toast';
+import { queryClient } from '../main'
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
+
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get('mode'); // 👈 this gives you "login" or "signup"
+
   const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['auth'] }); // 🔁 refetch user
       toast.success('Logged in successfully!');
       navigate('/chat');
     },
@@ -22,7 +27,8 @@ const Auth = () => {
 
   const signupMutation = useMutation({
     mutationFn: signupUser,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['auth'] });
       toast.success('Signed up successfully!');
       navigate('/chat');
     },
@@ -37,14 +43,14 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    isLogin ? loginMutation.mutate(formData) : signupMutation.mutate(formData);
+    mode==='login' ? loginMutation.mutate(formData) : signupMutation.mutate(formData);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          {isLogin ? 'Login' : 'Sign Up'}
+          {mode==='login' ? 'Login' : 'Sign Up'}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -70,13 +76,13 @@ const Auth = () => {
             className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
             disabled={loginMutation.isPending || signupMutation.isPending}
           >
-            {isLogin ? 'Login' : 'Sign Up'}
+            {mode==='login' ? 'Login' : 'Sign Up'}
           </button>
         </form>
         <p className="text-sm text-center mt-4">
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <button onClick={() => setIsLogin((prev) => !prev)} className="text-indigo-600 font-medium hover:underline">
-            {isLogin ? 'Sign up' : 'Login'}
+          {mode==='login' ? "Don't have an account?" : 'Already have an account?'}{' '}
+          <button onClick={() => mode==='login' ? navigate('/auth/?mode=signup') : navigate('/auth/?mode=login')} className="text-indigo-600 font-medium hover:underline">
+            {mode==='login' ? 'Sign up' : 'Login'}
           </button>
         </p>
       </div>
